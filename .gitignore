@@ -1,0 +1,5 @@
+wallet.json
+*.keypair
+.makefun/
+node_modules/
+out/
