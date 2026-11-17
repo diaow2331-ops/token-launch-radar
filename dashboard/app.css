@@ -1,4 +1,4 @@
-/* Token Radar's plain theme. The five palette values, two radii and two families are the whole style;
+/* Token Radar's theme. The palette values, two radii and two families are the whole style;
    everything else is spacing, a hairline and a type step. */
 :root {
   --canvas: #f2f5f3;
@@ -7,6 +7,7 @@
   --muted: #5f6f67;
   --border: #d8e2dc;
   --accent: #0f7a5a;
+  --accent-soft: #e3f0ea;
   --negative: #b23b2e;
   --radius-control: 8px;
   --radius-panel: 14px;
@@ -65,11 +66,14 @@ a { color: var(--accent); }
 .controls { display: flex; flex-wrap: wrap; align-items: end; gap: var(--step-3); padding: var(--step-4) 0; border-top: 1px solid var(--border); }
 .field { display: grid; gap: var(--step-1); }
 .field label { color: var(--muted); font-size: 12px; }
-.field input, .field select {
+.field input[type="search"], .field select {
   min-height: 36px; padding: 0 var(--step-3); border: 1px solid var(--border); border-radius: var(--radius-control);
   background: var(--surface); min-width: 180px;
 }
-.field input { min-width: 280px; }
+.field input[type="search"] { min-width: 280px; }
+.check input { min-width: 0; flex: none; }
+.check { display: flex; align-items: center; gap: var(--step-2); min-height: 36px; color: var(--muted); font-size: 13px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
 .tabs { display: flex; gap: var(--step-1); padding: 3px; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); }
 .tabs button { min-height: 30px; padding: 0 var(--step-3); border: 0; border-radius: 6px; background: transparent; color: var(--muted); }
 .tabs button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
@@ -79,33 +83,52 @@ a { color: var(--accent); }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { padding: var(--step-3) var(--step-3); border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
+thead th { position: sticky; top: 0; background: var(--surface); z-index: 2; }
 th { color: var(--muted); font-size: 12px; font-weight: 500; white-space: nowrap; }
 th button { display: inline-flex; align-items: center; gap: var(--step-1); border: 0; background: none; padding: 0; color: inherit; font: inherit; }
 th button:hover { color: var(--ink); }
 tbody tr { cursor: pointer; }
-tbody tr:hover { background: var(--surface); }
-tbody tr[data-selected="true"] { background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+tbody tr:hover { background: var(--accent-soft); }
+tbody tr[data-selected="true"] { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
 .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .name { display: grid; gap: 2px; }
 .name b { font-weight: 600; }
 .sub { color: var(--muted); font-size: 12px; }
 .pos { color: var(--accent); }
 .neg { color: var(--negative); }
-.bar { width: 120px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--border) 60%, var(--surface)); overflow: hidden; }
+.bar { width: 120px; height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--accent); }
 .implied { display: flex; align-items: center; gap: var(--step-2); }
 .status { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
 .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.status.live::before { background: var(--negative); }
+.rank-badge {
+  display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px;
+  border-radius: 8px; background: var(--accent-soft); color: var(--accent);
+  font-family: var(--font-num); font-size: 13px; font-weight: 600;
+}
+tbody tr:nth-child(-n+3) .rank-badge { background: var(--accent); color: var(--surface); }
 
-.model { margin-top: var(--step-4); padding: var(--step-5); display: grid; gap: var(--step-3); }
+.model { margin-top: var(--step-4); padding: var(--step-5); display: grid; gap: var(--step-4); }
+.model h2 { margin-bottom: calc(var(--step-2) * -1); }
 .formula { font-family: var(--font-num); font-size: 13px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
+.val-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--step-3); }
+.val-cell { border: 1px solid var(--border); border-radius: var(--radius-control); padding: var(--step-3) var(--step-4); display: grid; gap: 2px; }
+.val-cell span { color: var(--muted); font-size: 12px; }
+.val-cell b { font-family: var(--font-num); font-size: 17px; font-weight: 600; }
+.val-cell small { color: var(--muted); font-size: 12px; }
+.cat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.cat-table th, .cat-table td { padding: 6px var(--step-3); border-bottom: 1px solid var(--border); text-align: left; }
+.cat-table th { color: var(--muted); font-weight: 500; font-size: 12px; }
+.cat-table td.num { font-family: var(--font-num); }
+.cat-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: var(--step-3) var(--step-6); }
 .empty { padding: var(--step-7) var(--step-5); text-align: center; display: grid; gap: var(--step-3); justify-items: center; }
 .empty p { color: var(--muted); }
 .button { min-height: 36px; padding: 0 var(--step-4); border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); }
 .button.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
 
 .detail {
-  position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 92vw); z-index: 10;
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 94vw); z-index: 10;
   background: var(--surface); border-left: 1px solid var(--border); padding: var(--step-5);
   overflow-y: auto; transform: translateX(0); transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
@@ -133,6 +156,7 @@ tbody tr[data-selected="true"] { background: color-mix(in srgb, var(--accent) 8%
   .lede { grid-template-columns: 1fr; gap: var(--step-4); }
   .facts { border-left: 0; border-top: 1px solid var(--border); padding-left: 0; padding-top: var(--step-4); }
   .field input { min-width: 0; width: 100%; }
+  .cat-wrap { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
